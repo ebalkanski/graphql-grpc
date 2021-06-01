@@ -21,14 +21,14 @@ function pull() {
 }
 
 # getServices clones or pulls the services with separate repos
-# in ${GOPATH}/src/bitbucket.scalefocus.com/go.
+# in ${GOPATH}/src/github.com/ebalkanski.
 function getServices() {
-  local CRYPTO_SERVICES_DIR="${GOPATH}/src/bitbucket.scalefocus.com/go"
+  local CRYPTO_SERVICES_DIR="${GOPATH}/src/github.com/ebalkanski"
   mkdir -p "${CRYPTO_SERVICES_DIR}" && cd "$_"
 
   local services=(
-    "cryptofeed"
-    "cryptocache"
+    "graphql"
+    "grpc"
   )
 
   for repo in ${services[@]}; do
@@ -40,7 +40,7 @@ function getServices() {
     fi
 
     echo "Cloning $repo repository to $CRYPTO_SERVICES_DIR..."
-    git clone "ssh://git@bitbucket.scalefocus.com:7999/go/${repo}.git"
+    git clone "ssh://git@github.com:ebalkanski/${repo}.git"
     pushd "${repo}" && git config user.email "${email}" && popd
   done
 }

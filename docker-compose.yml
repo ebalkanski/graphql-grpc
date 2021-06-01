@@ -4,38 +4,22 @@ volumes:
   mysql_data:
 
 services:
-  cryptofeed:
-    container_name: cryptofeed
+  graphql:
+    container_name: graphql
     build:
-      context: $GOPATH/src/bitbucket.scalefocus.com/go/cryptofeed/
+      context: $GOPATH/src/github.com/ebalkanski/graphql/
       dockerfile: Dockerfile.dev
-    env_file:
-      - ./env/cryptofeed.env
     volumes:
-      - "$GOPATH/src/bitbucket.scalefocus.com/go/cryptofeed:/go/src/bitbucket.scalefocus.com/go/cryptofeed"
+      - "$GOPATH/src/github.com/ebalkanski/graphql:/go/src/github.com/ebalkanski/graphql"
     ports:
       - "8080:8080"
     depends_on:
-      - cryptocache
+      - grpc
 
-  cryptocache:
-    container_name: cryptocache
+  grpc:
+    container_name: grpc
     build:
-      context: $GOPATH/src/bitbucket.scalefocus.com/go/cryptocache/
+      context: $GOPATH/src/github.com/ebalkanski/grpc/
       dockerfile: Dockerfile.dev
-    env_file:
-      - ./env/cryptocache.env
     volumes:
-      - "$GOPATH/src/bitbucket.scalefocus.com/go/cryptocache:/go/src/bitbucket.scalefocus.com/go/cryptocache"
-    depends_on:
-      - mysql
-
-  mysql:
-    container_name: mysqldb
-    image: mysql:5.7
-    env_file:
-      - ./env/mysql.env
-    volumes:
-      - mysql_data:/var/lib/mysql/
-    ports:
-      - "3306:3306"
+      - "$GOPATH/src/github.com/ebalkanski/grpc:/go/src/github.com/ebalkanski/grpc"
