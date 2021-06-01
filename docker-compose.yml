@@ -1,0 +1,41 @@
+version: '3'
+
+volumes:
+  mysql_data:
+
+services:
+  cryptofeed:
+    container_name: cryptofeed
+    build:
+      context: $GOPATH/src/bitbucket.scalefocus.com/go/cryptofeed/
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./env/cryptofeed.env
+    volumes:
+      - "$GOPATH/src/bitbucket.scalefocus.com/go/cryptofeed:/go/src/bitbucket.scalefocus.com/go/cryptofeed"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - cryptocache
+
+  cryptocache:
+    container_name: cryptocache
+    build:
+      context: $GOPATH/src/bitbucket.scalefocus.com/go/cryptocache/
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./env/cryptocache.env
+    volumes:
+      - "$GOPATH/src/bitbucket.scalefocus.com/go/cryptocache:/go/src/bitbucket.scalefocus.com/go/cryptocache"
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: mysqldb
+    image: mysql:5.7
+    env_file:
+      - ./env/mysql.env
+    volumes:
+      - mysql_data:/var/lib/mysql/
+    ports:
+      - "3306:3306"
