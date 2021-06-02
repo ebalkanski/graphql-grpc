@@ -40,7 +40,7 @@ function getServices() {
     fi
 
     echo "Cloning $repo repository to $CRYPTO_SERVICES_DIR..."
-    git clone "ssh://git@github.com:ebalkanski/${repo}.git"
+    git clone "https://github.com/ebalkanski/${repo}.git"
     pushd "${repo}" && git config user.email "${email}" && popd
   done
 }
